@@ -2,6 +2,6 @@
 
 namespace Payconn\Wirecard\Response;
 
-class PurchaseResponse extends WirecardResponse
+class RefundResponse extends WirecardResponse
 {
 }
