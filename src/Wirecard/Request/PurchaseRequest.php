@@ -26,8 +26,6 @@ class PurchaseRequest extends AbstractRequest
         $builder->addChild('InstallmentCount', strval($model->getInstallment()));
         $builder->addChild('Description', $model->getDescription());
         $builder->addChild('PaymentContent', $model->getDescription());
-        $builder->addChild('ErrorURL', $model->getFailureUrl());
-        $builder->addChild('SuccessURL', $model->getSuccessfulUrl());
 
         $tokenBuilder = $builder->addChild('Token');
         $tokenBuilder->addChild('UserCode', $token->getUserCode());

@@ -6,7 +6,7 @@
 
 <p align="center">Wirecard (Bonus, World, CardFinans, Maximum, Paraf, Advantage) gateway for Payconn payment processing library</p>
 <p align="center">
-  <a href="https://travis-ci.com/payconn/wirecard.svg?branch=master"><img src="https://travis-ci.com/payconn/wirecard" /></a>
+  <a href="https://travis-ci.com/payconn/wirecard"><img src="https://travis-ci.com/payconn/wirecard.svg?branch=master" /></a>
 </p>
 <hr>
 
@@ -32,7 +32,21 @@
 ## Basic Usages
 
 ```php
+use Payconn\Common\CreditCard;
+use Payconn\Wirecard;
+use Payconn\Wirecard\Model\Purchase;
+use Payconn\Wirecard\Token;
 
+$token = new Token('<YOUR-USER-CODE>', '<YOUR-PIN>');
+$purchase = new Purchase();
+$purchase->setTestMode(true);
+$purchase->setAmount(100);
+$purchase->setInstallment(1);
+$purchase->setDescription('<YOUR-DESCRIPTION>');
+$purchase->setCreditCard((new CreditCard('4111111111111111', '2024', '01', '123'))
+    ->setHolderName('<CARD-HOLDER-NAME>'));
+$purchase->generateOrderId();
+$response = (new Wirecard($token))->purchase($purchase);
 ```
 
 ## Change log

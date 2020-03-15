@@ -2,7 +2,7 @@
 
 namespace Payconn\Wirecard\Model;
 
-class CartToken
+class CardToken
 {
     /**
      * @var string|null
