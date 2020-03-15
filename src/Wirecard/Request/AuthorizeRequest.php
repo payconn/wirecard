@@ -47,7 +47,7 @@ class AuthorizeRequest extends AbstractRequest
         $creditCardInfo->addChild('ExpireYear', $model->getCreditCard()->getExpireYear());
         $creditCardInfo->addChild('ExpireMonth', $model->getCreditCard()->getExpireMonth());
         $creditCardInfo->addChild('Cvv', $model->getCreditCard()->getCvv());
-        $creditCardInfo->addChild('Price', strval($model->getAmount()));
+        $creditCardInfo->addChild('Price', strval($model->getAmount() * 100));
 
         /** @var HttpClient $httpClient */
         $httpClient = $this->getHttpClient();

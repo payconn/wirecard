@@ -24,10 +24,24 @@ class PurchaseRequest extends AbstractRequest
         $builder->addChild('CurrencyCode', 'TRY');
         $builder->addChild('IPAddress', $this->getIpAddress());
         $builder->addChild('InstallmentCount', strval($model->getInstallment()));
+        $builder->addChild('Description', $model->getDescription());
+        $builder->addChild('PaymentContent', $model->getDescription());
+        $builder->addChild('ErrorURL', $model->getFailureUrl());
+        $builder->addChild('SuccessURL', $model->getSuccessfulUrl());
 
         $tokenBuilder = $builder->addChild('Token');
         $tokenBuilder->addChild('UserCode', $token->getUserCode());
         $tokenBuilder->addChild('Pin', $token->getPin());
+
+        $cardToken = $model->getCardToken();
+        $cardTokenBuilder = $builder->addChild('CardTokenization');
+        $cardTokenBuilder->addChild('RequestType', '0');
+        if ($cardToken) {
+            $cardTokenBuilder->addChild('RequestType', '1');
+            $cardTokenBuilder->addChild('CustomerId', $cardToken->getCustomerId());
+            $cardTokenBuilder->addChild('ValidityPeriod', strval($cardToken->getValidityPeriod()));
+            $cardTokenBuilder->addChild('CCTokenId', $cardToken->getCcTokenId());
+        }
 
         $creditCardInfo = $builder->addChild('CreditCardInfo');
         $creditCardInfo->addChild('CreditCardNo', $model->getCreditCard()->getNumber());
@@ -35,7 +49,7 @@ class PurchaseRequest extends AbstractRequest
         $creditCardInfo->addChild('ExpireYear', $model->getCreditCard()->getExpireYear());
         $creditCardInfo->addChild('ExpireMonth', $model->getCreditCard()->getExpireMonth());
         $creditCardInfo->addChild('Cvv', $model->getCreditCard()->getCvv());
-        $creditCardInfo->addChild('Price', strval($model->getAmount()));
+        $creditCardInfo->addChild('Price', strval($model->getAmount() * 100));
 
         /** @var HttpClient $httpClient */
         $httpClient = $this->getHttpClient();
