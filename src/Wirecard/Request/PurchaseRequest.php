@@ -7,6 +7,7 @@ use Payconn\Common\HttpClient;
 use Payconn\Common\ResponseInterface;
 use Payconn\Wirecard\Model\Purchase;
 use Payconn\Wirecard\Response\PurchaseResponse;
+use Payconn\Wirecard\Token;
 
 class PurchaseRequest extends AbstractRequest
 {
@@ -14,17 +15,19 @@ class PurchaseRequest extends AbstractRequest
     {
         /** @var Purchase $model */
         $model = $this->getModel();
+        /** @var Token $token */
+        $token = $this->getToken();
 
         $builder = (new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><WIRECARD></WIRECARD>'));
         $builder->addChild('ServiceType', 'CCProxy');
         $builder->addChild('OperationType', 'Sale');
         $builder->addChild('CurrencyCode', 'TRY');
         $builder->addChild('IPAddress', $this->getIpAddress());
-        $builder->addChild('InstallmentCount', 1 == $model->getInstallment() ? 0 : $model->getInstallment());
+        $builder->addChild('InstallmentCount', strval(1 == $model->getInstallment() ? 0 : $model->getInstallment()));
 
-        $token = $builder->addChild('Token');
-        $token->addChild('UserCode', $this->getToken()->getUserCode());
-        $token->addChild('Pin', $this->getToken()->getPin());
+        $tokenBuilder = $builder->addChild('Token');
+        $tokenBuilder->addChild('UserCode', $token->getUserCode());
+        $tokenBuilder->addChild('Pin', $token->getPin());
 
         $creditCardInfo = $builder->addChild('CreditCardInfo');
         $creditCardInfo->addChild('CreditCardNo', $model->getCreditCard()->getNumber());
@@ -32,7 +35,7 @@ class PurchaseRequest extends AbstractRequest
         $creditCardInfo->addChild('ExpireYear', $model->getCreditCard()->getExpireYear());
         $creditCardInfo->addChild('ExpireMonth', $model->getCreditCard()->getExpireMonth());
         $creditCardInfo->addChild('Cvv', $model->getCreditCard()->getCvv());
-        $creditCardInfo->addChild('Price', $model->getAmount());
+        $creditCardInfo->addChild('Price', strval($model->getAmount()));
 
         /** @var HttpClient $httpClient */
         $httpClient = $this->getHttpClient();
