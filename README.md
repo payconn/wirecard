@@ -1,11 +1,24 @@
-# Payconn: Wirecard
+<p align="center">
+<a href="https://www.wirecard.com.tr/"><img width="200" src="https://www.wirecard.com/assets/media/Logos/wirecard_dark.svg"></a>
+</p>
 
-**Wirecard (Bonus, World, CardFinans, Maximum, Paraf, Advantage) gateway for Payconn payment processing library**
+<h3 align="center">Payconn: Wirecard</h3>
 
-[![Build Status](https://travis-ci.com/payconn/wirecard.svg?branch=master)](https://travis-ci.com/payconn/wirecard)
+<p align="center">Wirecard (Bonus, World, CardFinans, Maximum, Paraf, Advantage) gateway for Payconn payment processing library</p>
+<p align="center">
+  <a href="https://travis-ci.com/payconn/wirecard.svg?branch=master"><img src="https://travis-ci.com/payconn/wirecard" /></a>
+</p>
+<hr>
 
-[Payconn](https://github.com/payconn/common) is a framework agnostic, multi-gateway payment
-processing library for PHP. This package implements common classes required by Payconn.
+<p align="center">
+<b><a href="#installation">Installation</a></b>
+|
+<b><a href="#supported-methods">Supported Methods</a></b>
+|
+<b><a href="#basic-usages">Basic Usages</a></b>
+</p>
+<hr>
+<br>
 
 ## Installation
 
