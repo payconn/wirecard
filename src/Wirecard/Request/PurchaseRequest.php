@@ -40,7 +40,9 @@ class PurchaseRequest extends AbstractRequest
             $cardTokenBuilder->addChild('RequestType', '1');
             $cardTokenBuilder->addChild('CustomerId', $cardToken->getCustomerId());
             $cardTokenBuilder->addChild('ValidityPeriod', strval($cardToken->getValidityPeriod()));
-            $cardTokenBuilder->addChild('CCTokenId', $cardToken->getCcTokenId());
+            if ($ccTokenId = $cardToken->getCcTokenId()) {
+                $cardTokenBuilder->addChild('CCTokenId', $ccTokenId);
+            }
         }
 
         $creditCardInfo = $builder->addChild('CreditCardInfo');

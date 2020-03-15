@@ -2,19 +2,21 @@
 
 namespace Payconn\Wirecard\Traits;
 
+use Payconn\Wirecard\Model\CartToken as CartTokenModel;
+
 trait CardToken
 {
     /**
-     * @var CardToken|null
+     * @var CartTokenModel|null
      */
     protected $cardToken;
 
-    public function getCardToken(): ?CardToken
+    public function getCardToken(): ?CartTokenModel
     {
         return $this->cardToken;
     }
 
-    public function setCardToken(?CardToken $cardToken): void
+    public function setCardToken(?CartTokenModel $cardToken): void
     {
         $this->cardToken = $cardToken;
     }

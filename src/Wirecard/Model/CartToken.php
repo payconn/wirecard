@@ -15,7 +15,7 @@ class CartToken
     protected $customerId;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $validityPeriod;
 

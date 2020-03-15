@@ -23,7 +23,7 @@ class AuthorizeRequest extends AbstractRequest
         $builder->addChild('OperationType', 'Sale3DSEC');
         $builder->addChild('IPAddress', $this->getIpAddress());
         $builder->addChild('PaymentContent', $model->getDescription());
-        $builder->addChild('InstallmentCount', $model->getInstallment());
+        $builder->addChild('InstallmentCount', strval($model->getInstallment()));
         $builder->addChild('ErrorURL', $model->getFailureUrl());
         $builder->addChild('SuccessURL', $model->getSuccessfulUrl());
 
@@ -34,7 +34,9 @@ class AuthorizeRequest extends AbstractRequest
             $cardTokenBuilder->addChild('RequestType', '1');
             $cardTokenBuilder->addChild('CustomerId', $cardToken->getCustomerId());
             $cardTokenBuilder->addChild('ValidityPeriod', strval($cardToken->getValidityPeriod()));
-            $cardTokenBuilder->addChild('CCTokenId', $cardToken->getCcTokenId());
+            if ($ccTokenId = $cardToken->getCcTokenId()) {
+                $cardTokenBuilder->addChild('CCTokenId', $ccTokenId);
+            }
         }
 
         $tokenBuilder = $builder->addChild('Token');
