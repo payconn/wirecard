@@ -20,6 +20,9 @@
 <hr>
 <br>
 
+[Payconn](https://github.com/payconn/common) is a framework agnostic, multi-gateway payment
+processing library for PHP. This package implements common classes required by Payconn.
+
 ## Installation
 
     $ composer require payconn/wirecard
