@@ -5,25 +5,37 @@ namespace Payconn\Wirecard\Request;
 use Payconn\Common\AbstractRequest;
 use Payconn\Common\HttpClient;
 use Payconn\Common\ResponseInterface;
-use Payconn\Wirecard\Model\Purchase;
-use Payconn\Wirecard\Response\PurchaseResponse;
+use Payconn\Wirecard\Model\Authorize;
+use Payconn\Wirecard\Response\AuthorizeResponse;
 use Payconn\Wirecard\Token;
 
-class PurchaseRequest extends AbstractRequest
+class AuthorizeRequest extends AbstractRequest
 {
     public function send(): ResponseInterface
     {
-        /** @var Purchase $model */
+        /** @var Authorize $model */
         $model = $this->getModel();
         /** @var Token $token */
         $token = $this->getToken();
 
         $builder = (new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><WIRECARD></WIRECARD>'));
         $builder->addChild('ServiceType', 'CCProxy');
-        $builder->addChild('OperationType', 'Sale');
-        $builder->addChild('CurrencyCode', 'TRY');
+        $builder->addChild('OperationType', 'Sale3DSEC');
         $builder->addChild('IPAddress', $this->getIpAddress());
-        $builder->addChild('InstallmentCount', strval($model->getInstallment()));
+        $builder->addChild('PaymentContent', $model->getDescription());
+        $builder->addChild('InstallmentCount', $model->getInstallment());
+        $builder->addChild('ErrorURL', $model->getFailureUrl());
+        $builder->addChild('SuccessURL', $model->getSuccessfulUrl());
+
+        $cardToken = $model->getCardToken();
+        $cardTokenBuilder = $builder->addChild('CardTokenization');
+        $cardTokenBuilder->addChild('RequestType', '0');
+        if ($cardToken) {
+            $cardTokenBuilder->addChild('RequestType', '1');
+            $cardTokenBuilder->addChild('CustomerId', $cardToken->getCustomerId());
+            $cardTokenBuilder->addChild('ValidityPeriod', strval($cardToken->getValidityPeriod()));
+            $cardTokenBuilder->addChild('CCTokenId', $cardToken->getCcTokenId());
+        }
 
         $tokenBuilder = $builder->addChild('Token');
         $tokenBuilder->addChild('UserCode', $token->getUserCode());
@@ -43,6 +55,6 @@ class PurchaseRequest extends AbstractRequest
             'body' => $builder->asXML(),
         ]);
 
-        return new PurchaseResponse($this->getModel(), (array) @simplexml_load_string($response->getBody()->getContents()));
+        return new AuthorizeResponse($this->getModel(), (array) @simplexml_load_string($response->getBody()->getContents()));
     }
 }
