@@ -6,9 +6,9 @@ use Payconn\Common\TokenInterface;
 
 class Token implements TokenInterface
 {
-    private string $userCode;
+    private $userCode;
 
-    private string $pin;
+    private $pin;
 
     public function __construct(string $userCode, string $pin)
     {

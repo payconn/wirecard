@@ -7,7 +7,7 @@ use Payconn\Common\ModelInterface;
 
 abstract class WirecardResponse extends AbstractResponse
 {
-    protected array $response;
+    protected $response;
 
     public function __construct(ModelInterface $model, array $parameters)
     {

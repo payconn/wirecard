@@ -4,7 +4,7 @@ namespace Payconn\Wirecard\Traits;
 
 trait Installment
 {
-    protected int $installment;
+    protected $installment;
 
     public function getInstallment(): int
     {
